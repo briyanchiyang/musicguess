@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import { useEffect, useState } from "react";
+import LoadImage from "./components/LoadImage";
 import './App.css';
 import OpenAI from "openai";
 
@@ -74,11 +75,24 @@ function App() {
 
     const data = await playlist.json();
     setArtists(data.items);
+    console.log("Artists: ");
 
-    console.log(artists[0]);
+    // Get six unique random pictures, store for component usage
+    var rand = [];
+    localStorage.clear();
+    for (let i = 0; i < 6; i++){
+        var curr = Math.floor(Math.random() * 50);
 
+        while (rand.includes(curr)) {
+        curr = Math.floor(Math.random() * 50);
+        }
 
-    aiPicture();
+        rand.push(curr);
+        console.log(JSON.stringify(artists[curr]));
+        localStorage.setItem(i, JSON.stringify(artists[curr]))
+    }
+
+    //aiPicture();
   }
 
   async function aiPicture() {
@@ -105,8 +119,6 @@ function App() {
       artist += artist_arr[i]["name"] + ", ";
     }
 
-    console.log('Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible.");
-
     const res = await openai.images.generate({
       model: "dall-e-3",
       style: "vivid",
@@ -116,7 +128,7 @@ function App() {
       size: "1024x1024"
     });
     setResult(res.data[0].url);
-    console.log("song: ", song)
+    console.log("song: ", song) 
   }
 
   //useEffect(() => { // syntax for running only once
@@ -154,12 +166,7 @@ function App() {
         <button>Generate an Image</button>
         <button onClick={login}>Login to Spotify!</button>
         <button onClick={search}>Playlist retrieval</button>
-        {result.length > 0 ? (
-          <img className="result-image" src={result} alt="result" />
-        ) : (
-          <></>
-        )}
-        
+        <LoadImage />
       </header>
     </div>
   );
