@@ -30,10 +30,8 @@ function App() {
   useEffect(() => {
     if(window.location.hash) {
       params = getAccessToken(window.location.hash);
-      console.log("Params2" + params);
     }
   });
-  console.log("Params" + params);
 
   const [result, setResult] = useState(0);
 
@@ -62,10 +60,11 @@ function App() {
 
   }
 
-  async function search() {
-    console.log("Searching", params.access_token);
+  // Search for top 50 songs
+  const [artists, setArtists] = useState([]);
 
-    var playlist = await fetch("https://api.spotify.com/v1/me/playlists", {
+  async function search() {
+    var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -74,9 +73,51 @@ function App() {
     });
 
     const data = await playlist.json();
-    console.log(data);
+    setArtists(data.items);
+
+    console.log(artists[0]);
+
+
+    aiPicture();
   }
 
+  async function aiPicture() {
+    // Get six unique random pictures; pick one (rand[0]) to make AI cover
+    var rand = [];
+
+    for (let i = 0; i < 6; i++){
+      var curr = Math.floor(Math.random() * 50);
+
+      while (rand.includes(curr)) {
+        curr = Math.floor(Math.random() * 50);
+      }
+
+      rand.push(curr);
+    }
+
+    // Generate image
+    var album = artists[rand[0]]["album"]["name"];
+    var song = artists[rand[0]]["name"];
+    var artist_arr = artists[rand[0]]["artists"];
+
+    var artist = "";
+    for (let i = 0; i < artist_arr.length; i++){
+      artist += artist_arr[i]["name"] + ", ";
+    }
+
+    console.log('Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible.");
+
+    const res = await openai.images.generate({
+      model: "dall-e-3",
+      style: "vivid",
+      //prompt: 'Album cover as similar to the song: ' + song + ", by " + artist + "in the album " + album + " as possible.",
+      prompt: 'Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",
+      n: 1,
+      size: "1024x1024"
+    });
+    setResult(res.data[0].url);
+    console.log("song: ", song)
+  }
 
   //useEffect(() => { // syntax for running only once
   //  // API access token
