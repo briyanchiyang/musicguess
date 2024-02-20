@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import OpenAI from "openai";
+import loadingScreen from "./loadingScreen.jpg";
 
 const open_ai_key = process.env.REACT_APP_OPENAI
 const openai = new OpenAI({apiKey: open_ai_key, dangerouslyAllowBrowser: true});
 
 const LoadImage2 = () => {
-    const [token, setToken] = useState("");
-    const [artist_info, setArtistInfo] = useState([]);
+    //const [artist_info, setArtistInfo] = useState([]);
     const [result, setResult] = useState(0);
+    const [start, isStarting] = useState(0);
 
     useEffect(() => {
         async function generate() {
+            isStarting(1); // 1: component has started but image has not generated yet
+
             const res = await openai.images.generate({
                 model: "dall-e-3",
                 style: "vivid",
@@ -43,11 +46,24 @@ const LoadImage2 = () => {
 
     return (
         <>
-        {result.length > 0 ? (
-        <div>
-            <img className="result-image" src={result} alt="result" />
-        </div>) : (<></>)}
+        {start == 1 ? (<>
+            {result.length > 0 ? (<img className="result-image" src={result} alt="result" />) :
+                                  <img className="result-image" src={loadingScreen} alt="loading" />}
+        </>) : (<>no</>)}
+
+        {/*{isStarting == 1 ?
+        ({result.length > 0 ? (<img className="result-image" src={result} alt="result" />) : (<img src={loadingScreen} alt="loading" />)}) : (<>Not yet</>)}*/}
+        
         </>
+        //<>
+        //{result.length > 0 ? (
+        //<div>
+        //    <img className="result-image" src={result} alt="result" />
+        //</div>) :
+        //(<>
+        //    <img src={loadingScreen} alt="loading" />
+        //</>)}
+        //</>
       );
 };
 

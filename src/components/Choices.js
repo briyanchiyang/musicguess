@@ -33,9 +33,7 @@ const Choices = () => {
         console.log("poadsfad");
         console.log(correctSong);
 
-        var correct_song_id = parseInt(localStorage.getItem("correct_song_id"));
-
-        if (index == correct_song_id){
+        if (index == correctSong){
             setOutcome("Correct!");
             console.log("adfas");
         }
@@ -48,14 +46,20 @@ const Choices = () => {
 
     return (
         <>
-        {choices.length === 6 ? (
-            <div>
-                <button onClick={() => buttonClick(0)}>{choices[0][0]} - <em>{choices[0][1]}</em></button>
-                <button onClick={() => buttonClick(1)}>{choices[1][0]} - <em>{choices[1][1]}</em></button>
-                <button onClick={() => buttonClick(2)}>{choices[2][0]} - <em>{choices[0][1]}</em></button>
-                <button onClick={() => buttonClick(3)}>{choices[3][0]} - <em>{choices[3][1]}</em></button>
-                <button onClick={() => buttonClick(4)}>{choices[4][0]} - <em>{choices[4][1]}</em></button>
-                <button  onClick={() => buttonClick(5)}>{choices[5][0]} - <em>{choices[5][1]}</em></button>
+        {choices.length == 6 ? (
+            <div className = "choices">
+                {/*<div className = "choices_row">*/}
+                    <button onClick={() => buttonClick(0)}>{choices[0][0]} - <em>{choices[0][1]}</em></button>
+                    <button onClick={() => buttonClick(1)}>{choices[1][0]} - <em>{choices[1][1]}</em></button> 
+                {/*</div>*/}
+                {/*<div className = "choices_row">*/}
+                    <button onClick={() => buttonClick(2)}>{choices[2][0]} - <em>{choices[0][1]}</em></button>
+                    <button onClick={() => buttonClick(3)}>{choices[3][0]} - <em>{choices[3][1]}</em></button>
+                {/*</div>*/}
+                {/*<div className = "choices_row">*/}
+                    <button onClick={() => buttonClick(4)}>{choices[4][0]} - <em>{choices[4][1]}</em></button>
+                    <button  onClick={() => buttonClick(5)}>{choices[5][0]} - <em>{choices[5][1]}</em></button>
+                {/*</div>*/}
 
                 {outcome.length > 0 ? (<div>{outcome}</div>) : (<></>)}
             </div>
