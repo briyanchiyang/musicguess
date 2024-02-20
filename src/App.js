@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import { useEffect, useState } from "react";
-import LoadImage from "./components/LoadImage";
+import LoadImage2 from "./components/LoadImage2";
 import './App.css';
 import OpenAI from "openai";
 
@@ -29,6 +29,8 @@ const getAccessToken = (hash) => {
 function App() {
   var params = [];
   useEffect(() => {
+    localStorage.clear();
+
     if(window.location.hash) {
       params = getAccessToken(window.location.hash);
     }
@@ -61,10 +63,11 @@ function App() {
 
   }
 
-  // Search for top 50 songs
   const [artists, setArtists] = useState([]);
 
   async function search() {
+
+    // Search for top 50 songs
     var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
       method: 'GET',
       headers: {
@@ -75,61 +78,69 @@ function App() {
 
     const data = await playlist.json();
     setArtists(data.items);
-    console.log("Artists: ");
+    console.log("Data: ");
+    console.log(data);
 
     // Get six unique random pictures, store for component usage
     var rand = [];
-    localStorage.clear();
+
     for (let i = 0; i < 6; i++){
         var curr = Math.floor(Math.random() * 50);
 
         while (rand.includes(curr)) {
-        curr = Math.floor(Math.random() * 50);
+          curr = Math.floor(Math.random() * 50);
         }
 
         rand.push(curr);
-        console.log(JSON.stringify(artists[curr]));
-        localStorage.setItem(i, JSON.stringify(artists[curr]))
+        localStorage.setItem(i, JSON.stringify(data.items[curr]));
+        console.log(localStorage.getItem(i));
     }
 
-    //aiPicture();
+    //for (let i = 0; i < 6; i++){
+    //  console.log(JSON.stringify(artists[rand[i]]));
+    //  localStorage.setItem(String(i), JSON.stringify(artists[rand[i]]));
+    //}
+
+    //for (let i = 0; i < 6; i++){
+    //  console.log(localStorage.getItem(String(i)));
+    //}
   }
 
-  async function aiPicture() {
-    // Get six unique random pictures; pick one (rand[0]) to make AI cover
-    var rand = [];
+  //async function aiPicture() {
+  //  // Get six unique random pictures; pick one (rand[0]) to make AI cover
+  //  var rand = [];
 
-    for (let i = 0; i < 6; i++){
-      var curr = Math.floor(Math.random() * 50);
+  //  for (let i = 0; i < 6; i++){
+  //    var curr = Math.floor(Math.random() * 50);
 
-      while (rand.includes(curr)) {
-        curr = Math.floor(Math.random() * 50);
-      }
+  //    while (rand.includes(curr)) {
+  //      curr = Math.floor(Math.random() * 50);
+  //    }
 
-      rand.push(curr);
-    }
+  //    rand.push(curr);
+  //  }
 
-    // Generate image
-    var album = artists[rand[0]]["album"]["name"];
-    var song = artists[rand[0]]["name"];
-    var artist_arr = artists[rand[0]]["artists"];
+  //  // Generate image
+  //  var album = artists[rand[0]]["album"]["name"];
+  //  var song = artists[rand[0]]["name"];
+  //  var artist_arr = artists[rand[0]]["artists"];
 
-    var artist = "";
-    for (let i = 0; i < artist_arr.length; i++){
-      artist += artist_arr[i]["name"] + ", ";
-    }
+  //  var artist = "";
+  //  for (let i = 0; i < artist_arr.length; i++){
+  //    artist += artist_arr[i]["name"] + ", ";
+  //  }
 
-    const res = await openai.images.generate({
-      model: "dall-e-3",
-      style: "vivid",
-      //prompt: 'Album cover as similar to the song: ' + song + ", by " + artist + "in the album " + album + " as possible.",
-      prompt: 'Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",
-      n: 1,
-      size: "1024x1024"
-    });
-    setResult(res.data[0].url);
-    console.log("song: ", song) 
-  }
+  //  const res = await openai.images.generate({
+  //    model: "dall-e-3",
+  //    style: "vivid",
+  //    //prompt: 'Album cover as similar to the song: ' + song + ", by " + artist + "in the album " + album + " as possible.",
+  //    prompt: 'Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",
+  //    n: 1,
+  //    size: "1024x1024"
+  //  });
+  //  setResult(res.data[0].url);
+  //  console.log("song: ", song) 
+  //}
 
   //useEffect(() => { // syntax for running only once
   //  // API access token
@@ -166,7 +177,8 @@ function App() {
         <button>Generate an Image</button>
         <button onClick={login}>Login to Spotify!</button>
         <button onClick={search}>Playlist retrieval</button>
-        <LoadImage />
+        {/*<LoadImage2 />*/}
+        
       </header>
     </div>
   );
