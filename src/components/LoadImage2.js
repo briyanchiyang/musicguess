@@ -20,6 +20,7 @@ const LoadImage2 = () => {
                 size: "1024x1024"
             });
             setResult(res.data[0].url);
+            console.log("Current song: " + song);
         }
 
         if (localStorage.hasOwnProperty(0)){
@@ -42,7 +43,10 @@ const LoadImage2 = () => {
 
     return (
         <>
-        {result.length > 0 ? (<img className="result-image" src={result} alt="result" />) : (<>hi</>)}
+        {result.length > 0 ? (
+        <div>
+            <img className="result-image" src={result} alt="result" />
+        </div>) : (<></>)}
         </>
       );
 };

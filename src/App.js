@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import { useEffect, useState } from "react";
 import LoadImage2 from "./components/LoadImage2";
+import Choices from "./components/Choices";
 import './App.css';
 import OpenAI from "openai";
 
@@ -66,7 +67,6 @@ function App() {
   const [artists, setArtists] = useState([]);
 
   async function search() {
-
     // Search for top 50 songs
     var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
       method: 'GET',
@@ -169,7 +169,7 @@ function App() {
         <button onClick={login}>Login to Spotify!</button>
         <button onClick={search}>Playlist retrieval</button>
         <LoadImage2 />
-        
+        <Choices />
       </header>
     </div>
   );
