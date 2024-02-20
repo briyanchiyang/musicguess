@@ -95,15 +95,6 @@ function App() {
         localStorage.setItem(i, JSON.stringify(data.items[curr]));
         console.log(localStorage.getItem(i));
     }
-
-    //for (let i = 0; i < 6; i++){
-    //  console.log(JSON.stringify(artists[rand[i]]));
-    //  localStorage.setItem(String(i), JSON.stringify(artists[rand[i]]));
-    //}
-
-    //for (let i = 0; i < 6; i++){
-    //  console.log(localStorage.getItem(String(i)));
-    //}
   }
 
   //async function aiPicture() {
@@ -177,7 +168,7 @@ function App() {
         <button>Generate an Image</button>
         <button onClick={login}>Login to Spotify!</button>
         <button onClick={search}>Playlist retrieval</button>
-        {/*<LoadImage2 />*/}
+        <LoadImage2 />
         
       </header>
     </div>
