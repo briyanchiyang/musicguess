@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: black;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -124,3 +124,9 @@ h1 {
 .btn:hover::after {
   color: #fff;
 }
+
+#start {
+  margin-top: 10px;
+  background: linear-gradient(145deg, #ff5050, #ff9933);
+}
+

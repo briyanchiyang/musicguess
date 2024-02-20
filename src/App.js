@@ -12,9 +12,8 @@ const redirect_uri = "http://localhost:3000/auth/callback"
 
 const openai = new OpenAI({apiKey: open_ai_key, dangerouslyAllowBrowser: true});
 
-// Get response query params for subsequent calls
-// http://localhost:3000/auth/callback#access_token=BQDKGqrNHIbFuKM7DFKAl-gpAHNuqD5qjSgmKSqZdjEubk_84XwkQIT6FSkggfCUxk2t8lAyVKKEO9lAtoZwR8kSYIrbBus0QpByv81kcZxzfZcPn7w9zJJR_zBjmZ5QKlQ2D1LES4qRuuAH0UaJF4lrDD0XKdjxDubWGfMXrA&token_type=Bearer&expires_in=3600
 
+// Get response query params for subsequent calls
 const getAccessToken = (hash) => {
   const param_string = hash.substring(1).split("&");
   const params = new Map();
@@ -27,31 +26,20 @@ const getAccessToken = (hash) => {
 }
 
 
+
 function App() {
   var params = [];
   useEffect(() => {
     localStorage.clear();
 
     if(window.location.hash) {
+      // Get token for API call
       params = getAccessToken(window.location.hash);
     }
   });
 
-  const [result, setResult] = useState(0);
-
-  // Image generation
-  const generateImage = async () => {
-    const res = await openai.images.generate({
-      prompt: 'person',
-      n: 1,
-      size: "512x512",
-    });
-    setResult(res.data[0].url);
-  };
-
-
-  // Song generation
-  const [accessToken, setAccessToken] = useState("");
+  // Spotify authentication requeset
+  const [access, getAccess] = useState(false);
   const login = () => {
     // Auth request
     var url = "https://accounts.spotify.com/authorize"; // Base url
@@ -61,119 +49,64 @@ function App() {
     url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
     //url += '&state=' + encodeURIComponent(state);
     window.location = url;
-
+    getAccess(true);
   }
 
-  const [artists, setArtists] = useState([]);
 
-  async function search() {
-    // Search for top 50 songs
-    var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + params.access_token
-      }
-    });
+const [started, startGame] = useState(false);
 
-    const data = await playlist.json();
-    setArtists(data.items);
-    console.log("Data: ");
-    console.log(data);
-
-    // Get six unique random pictures, store for component usage
-    var rand = [];
-
-    for (let i = 0; i < 6; i++){
-        var curr = Math.floor(Math.random() * 50);
-
-        while (rand.includes(curr)) {
-          curr = Math.floor(Math.random() * 50);
-        }
-
-        rand.push(curr);
-        localStorage.setItem(i, JSON.stringify(data.items[curr]));
-        console.log(localStorage.getItem(i));
+async function search() {
+  // Search for top 50 songs
+  console.log("adfadsf");
+  var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + params.access_token
     }
+  });
 
-    // Out of the six, pick one that is the correct image
-    var correct_song_id = Math.floor(Math.random() * 6);
-    localStorage.setItem("correct_song_id", correct_song_id);
+  const data = await playlist.json();
+  console.log("Data: ");
+  console.log(data);
+
+  // Get six unique random pictures, store for component usage
+  var rand = [];
+
+  for (let i = 0; i < 6; i++){
+      var curr = Math.floor(Math.random() * 50);
+
+      while (rand.includes(curr)) {
+        curr = Math.floor(Math.random() * 50);
+      }
+
+      rand.push(curr);
+      localStorage.setItem(i, JSON.stringify(data.items[curr]));
   }
 
-  //async function aiPicture() {
-  //  // Get six unique random pictures; pick one (rand[0]) to make AI cover
-  //  var rand = [];
+  // Out of the six, pick one that is the correct image
+  var correct_song_id = Math.floor(Math.random() * 6);
+  localStorage.setItem("correct_song_id", correct_song_id);
 
-  //  for (let i = 0; i < 6; i++){
-  //    var curr = Math.floor(Math.random() * 50);
-
-  //    while (rand.includes(curr)) {
-  //      curr = Math.floor(Math.random() * 50);
-  //    }
-
-  //    rand.push(curr);
-  //  }
-
-  //  // Generate image
-  //  var album = artists[rand[0]]["album"]["name"];
-  //  var song = artists[rand[0]]["name"];
-  //  var artist_arr = artists[rand[0]]["artists"];
-
-  //  var artist = "";
-  //  for (let i = 0; i < artist_arr.length; i++){
-  //    artist += artist_arr[i]["name"] + ", ";
-  //  }
-
-  //  const res = await openai.images.generate({
-  //    model: "dall-e-3",
-  //    style: "vivid",
-  //    //prompt: 'Album cover as similar to the song: ' + song + ", by " + artist + "in the album " + album + " as possible.",
-  //    prompt: 'Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",
-  //    n: 1,
-  //    size: "1024x1024"
-  //  });
-  //  setResult(res.data[0].url);
-  //  console.log("song: ", song) 
-  //}
-
-  //useEffect(() => { // syntax for running only once
-  //  // API access token
-  //  var authParameters = {
-  //    method: 'POST',
-  //    headers: {
-  //      'Content-Type': "application/x-www-form-urlencoded"
-  //    },
-
-  //    // Boilerplate for passing client id and secret
-  //    body: 'grant_type=client_credentials&client_id=' + spotify_client_id + '&client_secret=' + spotify_client_secret
-  //  }
-  //  fetch("https://accounts.spotify.com/api/token", authParameters)
-  //    .then(result => result.json())
-  //    .then(data => setAccessToken(data.access_token)) // !!error handling!!
-  //}, [])
+  startGame(true);
+}
 
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button>Generate an Image</button>
-        <button onClick={login}>Login to Spotify!</button>
-        <button onClick={search}>Playlist retrieval</button>
-        <LoadImage2 />
-        <Choices />
+        {started == false ? (
+          <>
+          <h1>Music Musings</h1>
+          <div className="desc">
+            <p>I love listening to music, and thought it'd be interesting to share my music tastes through a game. There will be six songs that I listen to, and a DALL-E generated image will appear that is inspired by one of them. Guess which one is the correct song!</p>
+          </div>
+          <button className= "btn" onClick={login}>Login to (my) Spotify! {access == true ? (<>done!</>) : (<></>)}</button>
+          </>) : (<></>)}
+
+        <button className= "btn" id="start" onClick={search}>Start game!</button>
+        <LoadImage2 started={started}/>
+        <Choices started={started}/>
       </header>
     </div>
   );
