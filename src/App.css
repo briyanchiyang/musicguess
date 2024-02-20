@@ -59,3 +59,68 @@ h1 {
   justify-items: center; /* Center buttons horizontally */
   align-items: center; /* Center buttons vertically */
 }
+
+#login-button {
+  padding: 20px 60px;
+  font-size: 20px;
+  display: flex;
+  border-radius: 5px;
+  z-index: 1;
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+}
+
+#login-button::before {
+  content: "";
+  position: absolute;
+  border-radius: 4px;
+  background-color: white;
+  z-index: -1;
+  transition: 200ms;
+}
+
+
+.btn {
+  padding: 20px 60px;
+  border: none;
+  position: relative;
+  z-index: 1;
+  border-radius: 5px;
+  background: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  cursor: pointer;
+  color: white;
+  font-size: 25px;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  border-radius: 4px;
+  background-color: black;
+  z-index: -1;
+  transition: 400ms;
+}
+
+.btn::after {
+  content: attr(data);
+  font-size: 16px;
+  background: linear-gradient(to left, #00ffa3, #dc1fff);
+  -webkit-background-clip: text;
+  color: transparent;
+  transition: 200ms;
+}
+
+.btn:hover::before {
+  opacity: 10%;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+.btn:hover::after {
+  color: #fff;
+}
