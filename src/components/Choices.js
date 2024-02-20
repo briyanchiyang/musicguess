@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const Choices = () => {
     const [choices, setChoices] = useState([]);
+    const [correctSong, setCorrectSong] = useState("");
+    const [outcome, setOutcome] = useState("");
     
     useEffect(() => {
         if (localStorage.hasOwnProperty(5)){
@@ -19,21 +21,43 @@ const Choices = () => {
             }
 
             setChoices(temp);
-            console.log(choices);
-       }
+        }
+
+        // Can just be its own variable?
+        if (localStorage.hasOwnProperty("correct_song_id")){
+            setCorrectSong(parseInt(localStorage.getItem("correct_song_id")));
+        }
     });
+
+    const buttonClick = (index) => {
+        console.log("poadsfad");
+        console.log(correctSong);
+
+        var correct_song_id = parseInt(localStorage.getItem("correct_song_id"));
+
+        if (index == correct_song_id){
+            setOutcome("Correct!");
+            console.log("adfas");
+        }
+        else{
+            setOutcome("Incorrect :(");
+        }
+
+    }
 
 
     return (
         <>
         {choices.length === 6 ? (
             <div>
-                <button type="button">{choices[0][0]} - {choices[0][1]}</button>
-                <button type="button">{choices[1][0]} - {choices[1][1]}</button>
-                <button type="button">{choices[2][0]} - {choices[0][1]}</button>
-                <button type="button">{choices[3][0]} - {choices[3][1]}</button>
-                <button type="button">{choices[4][0]} - {choices[4][1]}</button>
-                <button type="button">{choices[5][0]} - {choices[5][1]}</button>
+                <button onClick={() => buttonClick(0)}>{choices[0][0]} - <em>{choices[0][1]}</em></button>
+                <button onClick={() => buttonClick(1)}>{choices[1][0]} - <em>{choices[1][1]}</em></button>
+                <button onClick={() => buttonClick(2)}>{choices[2][0]} - <em>{choices[0][1]}</em></button>
+                <button onClick={() => buttonClick(3)}>{choices[3][0]} - <em>{choices[3][1]}</em></button>
+                <button onClick={() => buttonClick(4)}>{choices[4][0]} - <em>{choices[4][1]}</em></button>
+                <button  onClick={() => buttonClick(5)}>{choices[5][0]} - <em>{choices[5][1]}</em></button>
+
+                {outcome.length > 0 ? (<div>{outcome}</div>) : (<></>)}
             </div>
         ) : (
             <>this shit hasn't arrived yet</>

@@ -20,13 +20,13 @@ const LoadImage2 = () => {
                 size: "1024x1024"
             });
             setResult(res.data[0].url);
-            console.log("Current song: " + song);
+            console.log('Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",);
         }
 
-        if (localStorage.hasOwnProperty(0)){
+        if (localStorage.hasOwnProperty("correct_song_id")){
+            var correct_song_id = parseInt(localStorage.getItem("correct_song_id"));
 
-            console.log("getting sth");
-            var artist_info = JSON.parse(localStorage.getItem(0));
+            var artist_info = JSON.parse(localStorage.getItem(correct_song_id));
 
             var album = artist_info["album"]["name"];
             var song = artist_info["name"];

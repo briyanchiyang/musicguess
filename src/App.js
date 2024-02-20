@@ -95,6 +95,10 @@ function App() {
         localStorage.setItem(i, JSON.stringify(data.items[curr]));
         console.log(localStorage.getItem(i));
     }
+
+    // Out of the six, pick one that is the correct image
+    var correct_song_id = Math.floor(Math.random() * 6);
+    localStorage.setItem("correct_song_id", correct_song_id);
   }
 
   //async function aiPicture() {
