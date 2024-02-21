@@ -4,6 +4,12 @@ I like listening to music, and am also fascinated by machine learning and curren
 
 Obviously this isn't going to solve world hunger, but it's fun! It's also a nice way to be reminded of what old songs you used to listen to but forgot about, since this is your top 50. This project reminded me of Frank Ocean's "Chanel", which I will start listening to again.
 
+
+
+https://github.com/briyanchiyang/musicguess/assets/96768174/df9f7a6d-12bb-494a-b406-dcc2b2fc590e
+
+
+
 ## Setup
 
 After cloning the project with
