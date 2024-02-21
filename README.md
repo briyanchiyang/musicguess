@@ -1,6 +1,8 @@
 # Music Musings
 
-I like listening to music, and am also fascinated by machine learning and currently do academic research with multimodal models. I decided to combine the two through a game: given an AI-generated song cover and song lyric, guess the user's song out of six options.
+I like listening to music, and am also fascinated by machine learning and currently do academic research with multimodal models. I decided to combine the two through a game: the user is given six options of songs they listen to (all songs are sampled from their top 50 most listened to). An AI-generated song cover and song lyric will be made from one of the options, and the user guesses the correct song!
+
+Obviously this isn't going to solve world hunger, but it's fun! It's also a nice way to be reminded of what old songs you used to listen to but forgot about, since this is your top 50. This project reminded me of Frank Ocean's "Chanel", which I will start listening to again.
 
 ## Setup
 

@@ -95,10 +95,10 @@ async function search() {
           <>
           <h1>Music Musings</h1>
           <div className="desc">
-            <p>I love listening to music, and thought it'd be interesting to share my music tastes through a game. There will be six songs that I listen to to choose from. A DALL-E generated image and a GPT-4-generated clue will appear that is inspired by one of the six songs. Guess which one is correct!</p>
+            <p>I love listening to music, and thought it'd be fun if users could interact with their  music tastes through a game. There will be six songs that you listen to frequently to choose from. A DALL-E generated image and a GPT-4-generated clue will appear that is inspired by one of the six songs. Guess which one is correct!</p>
             <p>Disclaimer: the quotes aren't really representative of the actual lyrics since they're AI-generated.</p>
           </div>
-          <button className= "btn" onClick={login}>Login to (my) Spotify! {access == true ? (<>(done!)</>) : (<></>)}</button>
+          <button className= "btn" onClick={login}>Login to Spotify! {access == true ? (<>(done!)</>) : (<></>)}</button>
           </>) : (<></>)}
 
         <button className= "btn" id="start" onClick={search}>
