@@ -5,7 +5,7 @@ import loadingScreen from "./loadingScreen.jpg";
 const open_ai_key = process.env.REACT_APP_OPENAI
 const openai = new OpenAI({apiKey: open_ai_key, dangerouslyAllowBrowser: true});
 
-const LoadImage2 = (props) => {
+const AIGenerate = (props) => {
     //const [artist_info, setArtistInfo] = useState([]);
     const [result, setResult] = useState(0);
     const [resultQuote, setResultQuote] = useState(0);
@@ -67,4 +67,4 @@ const LoadImage2 = (props) => {
       );
 };
 
-export default LoadImage2
+export default AIGenerate;

@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import { useEffect, useState } from "react";
-import LoadImage2 from "./components/LoadImage2";
+import AIGenerate from "./components/AIGenerate";
 import Choices from "./components/Choices";
 import './App.css';
 import OpenAI from "openai";
@@ -55,7 +55,6 @@ const [gameCounter, setGameCounter] = useState(0);
 
 async function search() {
   // Search for top 50 songs
-  console.log("adfadsf");
   var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50", {
     method: 'GET',
     headers: {
@@ -106,7 +105,7 @@ async function search() {
         <button className= "btn" id="start" onClick={search}>
             {started == false ? (<>Start game!</>) : (<>Next round <span>&#8680;</span> </>) }
         </button>
-        <LoadImage2 started={started}/>
+        <AIGenerate started={started}/>
         <Choices started={started}/>
       </header>
     </div>
