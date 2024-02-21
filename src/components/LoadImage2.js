@@ -12,6 +12,7 @@ const LoadImage2 = (props) => {
 
     useEffect(() => {
         async function generate() {
+            setResult(0);
             const res = await openai.images.generate({
                 model: "dall-e-3",
                 style: "vivid",

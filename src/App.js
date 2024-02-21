@@ -26,7 +26,6 @@ const getAccessToken = (hash) => {
 }
 
 
-
 function App() {
   var params = [];
   useEffect(() => {
@@ -38,7 +37,7 @@ function App() {
     }
   });
 
-  // Spotify authentication requeset
+  // Spotify authentication request
   const [access, getAccess] = useState(false);
   const login = () => {
     // Auth request
@@ -47,18 +46,17 @@ function App() {
     url += '&client_id=' + encodeURIComponent(spotify_client_id);
     url += '&scope=' + encodeURIComponent(["user-top-read"]);
     url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
-    //url += '&state=' + encodeURIComponent(state);
     window.location = url;
     getAccess(true);
   }
 
-
 const [started, startGame] = useState(false);
+const [gameCounter, setGameCounter] = useState(0);
 
 async function search() {
   // Search for top 50 songs
   console.log("adfadsf");
-  var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
+  var playlist = await fetch("https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=50", {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +65,6 @@ async function search() {
   });
 
   const data = await playlist.json();
-  console.log("Data: ");
   console.log(data);
 
   // Get six unique random pictures, store for component usage
@@ -89,6 +86,7 @@ async function search() {
   localStorage.setItem("correct_song_id", correct_song_id);
 
   startGame(true);
+  setGameCounter(gameCounter + 1);
 }
 
 
@@ -104,7 +102,9 @@ async function search() {
           <button className= "btn" onClick={login}>Login to (my) Spotify! {access == true ? (<>done!</>) : (<></>)}</button>
           </>) : (<></>)}
 
-        <button className= "btn" id="start" onClick={search}>Start game!</button>
+        <button className= "btn" id="start" onClick={search}>
+            {started == false ? (<>Start game!</>) : (<>Next round <span>&#8680;</span> </>) }
+        </button>
         <LoadImage2 started={started}/>
         <Choices started={started}/>
       </header>

@@ -9,15 +9,12 @@ const Choices = (props) => {
 
     var clicked = false;
     var correct_name = "";
-    var correct_song_id = -1;
 
     var temp = [];
     
     useEffect(() => {
         if (localStorage.hasOwnProperty(5)){
             console.log("getting choices");
-        
-
             for (let i = 0; i < 6; i++) {
                 var artist_info = JSON.parse(localStorage.getItem(i));
                 var album = artist_info["album"]["name"];
@@ -28,6 +25,7 @@ const Choices = (props) => {
             }
 
             setChoices(temp);
+            setOutcome("");
         }
 
         // Can just be its own variable?
@@ -48,9 +46,9 @@ const Choices = (props) => {
 
         if (clicked == false){
             clicked = true;
-            console.log("Correct song id here is: " + correct_name);
+            console.log("Correct song id here is: " + correctSong);
 
-            if (index == correctSong){
+            if (index == correctSongId){
                 setOutcome("Correct!");
             }
 
