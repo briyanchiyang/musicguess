@@ -7,7 +7,6 @@ import OpenAI from "openai";
 
 const open_ai_key = process.env.REACT_APP_OPENAI
 const spotify_client_id = process.env.REACT_APP_SPOTIFY_CLIENT_ID
-const spotify_client_secret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET
 const redirect_uri = "http://localhost:3000/auth/callback"
 
 const openai = new OpenAI({apiKey: open_ai_key, dangerouslyAllowBrowser: true});

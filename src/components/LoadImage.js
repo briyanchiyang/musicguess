@@ -10,10 +10,22 @@ const LoadImage = () => {
     const [result, setResult] = useState(0);
 
     useEffect(() => {
-        console.log("done")
-
         // Generate image
-        async function generateImage(song, album, artist){
+        console.log("starting");
+        async function generateImage(){
+            console.log("generateImage starting")
+
+            setArtistInfo(localStorage.getItem(0));
+            var album = artist_info["album"]["name"];
+            var song = artist_info["name"];
+            var artist_arr = artist_info["artists"];
+
+            var artist = "";
+            for (let i = 0; i < artist_arr.length; i++){
+              artist += artist_arr[i]["name"] + ", ";
+            }        
+
+
             const res = await openai.images.generate({
                 model: "dall-e-3",
                 style: "vivid",
@@ -24,14 +36,24 @@ const LoadImage = () => {
             });
 
             setResult(res.data[0].url);
+
+            console.log("generateImage finished")
         }
+        
+        window.addEventListener("storage", function(){
+            console.log("ASDFSDAFAS");
+        });
+
+        //return () => {
+        //    window.removeEventListener('storage', generateImage)
+        //}
 
 
-        if (localStorage.getItem(0)) {
-            console.log("Starting generation process")
-            setArtistInfo(JSON.parse(localStorage.getItem(0)));
+        //if (localStorage.getItem(0)) {
+        //    console.log("Starting generation process")
+        //    setArtistInfo(JSON.parse(localStorage.getItem(0)));
 
-            //console.log(localStorage.getItem("0"));
+            //console.log(localStoragle.getItem("0"));
 
             //// Get artist info
             //var album = artist_info["album"]["name"];
@@ -44,8 +66,8 @@ const LoadImage = () => {
             //}
 
             //generateImage(song, album, artist);
-        }
-    }, [localStorage.getItem(0)]);
+        //}
+    }, []);
 
     return (
         <>

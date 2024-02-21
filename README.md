@@ -1,14 +1,21 @@
 # Music Musings
 
-I like listening to music, and like sharing my music tastes with others! I'm also fascinated by machine learning and currently do academic research with multimodal models. I decided to combine the two through a game: given an AI-generated song cover and song lyric, guess the song out of six options. This way, I hope people can learn my music tastes but in a fun manner.
+I like listening to music, and am also fascinated by machine learning and currently do academic research with multimodal models. I decided to combine the two through a game: given an AI-generated song cover and song lyric, guess the user's song out of six options.
 
 ## Setup
 
-After cloning the project: with
+After cloning the project with
 
 ```git clone https://github.com/briyanchiyang/musicguess.git```
 
-run: `yarn start`. Then, go to [http://localhost:3000](http://localhost:3000) to view the project in your browser.
+Create an `.env` file consisting of the OpenAI API key and Spotify Client ID. Documentation regarding the OpenAI key can be found [here](https://platform.openai.com/docs/quickstart?context=node) and [here](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) respectively. (I don't use the Spotify client secret, so you don't need to put that here.)
+
+```
+REACT_APP_OPENAI="KEY HERE"
+REACT_APP_SPOTIFY_CLIENT_ID="KEY HERE"
+```
+
+Then, run `yarn start`. Then, go to [http://localhost:3000](http://localhost:3000) to view the project in your browser.
 
 The instructions from that point on should be straightforward. Click the "Log into Spotify" button, and then the "Start Game" button. Wait for the image and quote to pop up, and guess which song it is related to! Then, click "Next round" to advance to the next prompt.
 
@@ -26,9 +33,9 @@ I use the following APIs:
 ### OpenAI API:
 - Authorization: The authorization for OpenAI was far easier: I just made a key and imported the OpenAI Node.js package as outlined [here](https://platform.openai.com/docs/api-reference/authentication).
 - DALL-E: Given the song album, name, and artists, I ask DALL-E 3 to generate a song cover that is representative of the song.
-- GPT-4: I ask GPT-4 to geenrate a lyric that could feasibly be in the song.
+- GPT-4: I ask GPT-4 to generate a lyric that could feasibly be in the song.
 
 ## Limitations/Further Steps
 - Error-handling: it could be much more robust, e.g. when GET requests / authorization throws an error
 - Better song covers: The ChatGPT-generated song covers are much better than the API-generated ones - I don't know why, and apparently that's something others are experiencing too, but it'd be nice to fix it.
-- Visuals: the game could look better! I'm no CSS expert, but can definitely spice it up.   
+- Visuals: the game could look better! I'm no CSS expert, but can definitely spice it up.
