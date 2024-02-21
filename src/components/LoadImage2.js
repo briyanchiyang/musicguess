@@ -8,11 +8,14 @@ const openai = new OpenAI({apiKey: open_ai_key, dangerouslyAllowBrowser: true});
 const LoadImage2 = (props) => {
     //const [artist_info, setArtistInfo] = useState([]);
     const [result, setResult] = useState(0);
+    const [resultQuote, setResultQuote] = useState(0);
     const [start, isStarting] = useState(0);
 
     useEffect(() => {
         async function generate() {
             setResult(0);
+            setResultQuote(0);
+
             const res = await openai.images.generate({
                 model: "dall-e-3",
                 style: "vivid",
@@ -22,6 +25,16 @@ const LoadImage2 = (props) => {
                 size: "1024x1024"
             });
             setResult(res.data[0].url);
+
+            const res_quote = await openai.chat.completions.create({
+                messages: [{ role: "system", content: "You are a helpful lyricist that loves lyrics that do not connect to the song title. DO NOT USE THE SONG TITLE IN THE LYRIC." },
+                           { role: "user", content: "Generate a lyric line that might be in the song'" + song + "', in the album '" + album + "' by " + artist + ". But make it subtle! DO NOT USE THE SONG TITLE," + song + ", IN THE LYRIC. If I see " + song + "in the lyric, this is a BAD generation." }],
+                model: "gpt-4-0125-preview",
+
+            });
+            setResultQuote(res_quote.choices[0]["message"]["content"]);
+
+
             console.log('Album cover as similar to the album ' + album + ', and the song ' + song + ", by "+ artist + "as possible. NO WORDS.",);
         }
 
@@ -47,7 +60,8 @@ const LoadImage2 = (props) => {
         <>
         {props.started == 1 ? (<>
             {result.length > 0 ? (<img className="result-image" src={result} alt="result" />) :
-                                  <img className="result-image" src={loadingScreen} alt="loading" />}
+                                 (<img className="result-image" src={loadingScreen} alt="loading"/>)}
+            {resultQuote.length > 0 ? (resultQuote) : ("Loading GPT-4-generated quote...")}
         </>) : (<></>)}
         </>
       );
